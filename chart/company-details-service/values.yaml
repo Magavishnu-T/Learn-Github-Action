@@ -1,0 +1,94 @@
+replicaCount: 1
+
+image:
+  repository: company-details-service
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 8080  # Kubernetes Service port
+
+containerPort: 8080  # App container port (used in deployment.yaml)
+
+env:
+  - name: KAFKA_BROKERS
+    value: kafka-service.default.svc.cluster.local:9092
+  - name: KAFKA_TOPIC
+    value: company_kafka_topic
+  - name: KAFKA_SECURITY_PROTOCOL
+    value: PLAINTEXT
+  - name: KAFKA_SCRAM_MECHANISM
+    value: SCRAM-SHA-512
+  - name: KAFKA_JAAS_CONFIG
+    value: 'org.apache.kafka.common.security.scram.ScramLoginModule required username="user1" password="password";'
+  - name: KAFKA_SCHEMA_REGISTRY_URL
+    # value: mock://schema.kafka.svc
+    value: http://apicurio-registry.default.svc.cluster.local:8080/apis/ccompat/v7
+  - name: ACTIVEMQ_URL
+    value: tcp://activemq-service.default.svc.cluster.local:61616
+  - name: ACTIVEMQ_USER
+    value: admin
+  - name: ACTIVEMQ_PASSWORD
+    value: secret
+  - name: ACTIVEMQ_QUEUE
+    value: activemq_company_queue
+  - name: ACTIVEMQ_DL_QUEUE
+    value: dlqueue
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: {}
+
+# livenessProbe:
+#   httpGet:
+#     path: /actuator/health
+#     port: 8080
+#   initialDelaySeconds: 10
+#   timeoutSeconds: 2
+#   periodSeconds: 10
+#   failureThreshold: 3
+
+# readinessProbe:
+#   httpGet:
+#     path: /actuator/health
+#     port: 8080
+#   initialDelaySeconds: 10
+#   timeoutSeconds: 2
+#   periodSeconds: 10
+#   failureThreshold: 3
+
+autoscaling:
+  enabled: false
+
+volumes: []
+volumeMounts: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
