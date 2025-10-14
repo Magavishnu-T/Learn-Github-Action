@@ -4,10 +4,10 @@ on:
   # pull_request:
   #   branches:
   #     - main
-  
+
 jobs:
   CheckJob:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
     steps:
       - name: Clone Repository
         uses: actions/checkout@v5
@@ -28,3 +28,5 @@ jobs:
           
       - name: Bulid with Maven
         run: mvn clean install
+
+        
