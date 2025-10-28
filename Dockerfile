@@ -25,7 +25,7 @@
 
 FROM maven:3.8-jdk-11 AS build-stage1
 WORKDIR /temp_project
-COPY ./LEARN-GITHUB-ACTION/ /temp_project
+COPY ./Learn-Github-Action/ /temp_project
 RUN mvn clean packages
 FROM openjdk:11-jre-slim
 WORKDIR /COMPANY-DETAILS-SERVICE-V1
