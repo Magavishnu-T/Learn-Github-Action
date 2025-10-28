@@ -23,11 +23,12 @@
 # helm install company-details chart/company-details-service
 # helm upgrade --install company-details chart/company-details-service
 
-FROM maven:3.8-jdk-11 AS build-stage1
+FROM maven:3.9.9-eclipse-temurin-17 AS build-stage1
 WORKDIR /temp_project
 COPY . /temp_project
 RUN mvn clean package
-FROM openjdk:11-jre-slim
+
+FROM eclipse-temurin:17-jre
 WORKDIR /COMPANY-DETAILS-SERVICE-V1
 COPY --from=build-stage1 /temp_project/target/company-0.0.1-SNAPSHOT.jar ./
 CMD ["java", "-jar", "./company-0.0.1-SNAPSHOT.jar"]
