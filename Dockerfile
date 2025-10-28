@@ -29,5 +29,5 @@ COPY ./LEARN-GITHUB-ACTION/ /temp_project
 RUN mvn clean packages
 FROM openjdk:11-jre-slim
 WORKDIR /COMPANY-DETAILS-SERVICE-V1
-COPY --from=build-stage1/temp_project/target/company-0.0.1-SNAPSHOT.jar ./
+COPY --from=build-stage1 /temp_project/target/company-0.0.1-SNAPSHOT.jar ./
 CMD ["java", "-jar", "./company-0.0.1-SNAPSHOT.jar"]
