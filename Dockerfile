@@ -1,7 +1,7 @@
-FROM openjdk:17
-EXPOSE 8080
-COPY target/company-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# FROM openjdk:17
+# EXPOSE 8080
+# COPY target/company-0.0.1-SNAPSHOT.jar app.jar
+# ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
 # kubectl apply -f zookeeper-deployment.yaml
@@ -22,3 +22,12 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 # minikube image load company-details-service:latest
 # helm install company-details chart/company-details-service
 # helm upgrade --install company-details chart/company-details-service
+
+FROM maven:3.8-jdk-11 AS build-stage1
+WORKDIR /temp_project
+COPY ./LEARN-GITHUB-ACTION/ /temp_project
+RUN mvn clean packages
+FROM openjdk:11-jre-slim
+WORKDIR /COMPANY-DETAILS-SERVICE-V1
+COPY --from=build-stage1/temp_project/target/company-0.0.1-SNAPSHOT.jar ./
+CMD ["java", "-jar", "./company-0.0.1-SNAPSHOT.jar"]
