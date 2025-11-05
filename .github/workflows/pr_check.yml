@@ -23,7 +23,7 @@ jobs:
       - name: Bump Patch Version # note that space
         id: bump_tag
         run: |
-          latest_tag=${{ steps.get_tag.outputs.latest_tag}}
+          latest_tag=${{ steps.get_tag.outputs.latest_tag }}
           IFS='.' read -r -a parts <<< "${latest_tag#v}"
           new_tag="v${parts[0]}.${parts[1]}.$((parts[2] + 1))"
           echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
